@@ -3,7 +3,7 @@ import { useLocation } from "react-router-dom";
 export const OutputCV = ({ componentRef, inputForm, experiencesList }) => {
   const location = useLocation();
   return (
-    <div className="border border-gray-200" style={{ height: 600 }}>
+    <div className="border scale-75 border-gray-200" style={{ height: 800 }}>
       <div ref={componentRef}>
         <div className="bg-blue-400 h-8 mx-4"></div>
         <div className="flex  p-4">

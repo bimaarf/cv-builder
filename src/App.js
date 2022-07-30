@@ -9,7 +9,7 @@ function App() {
   return (
     <>
       <div className="">
-        <div className="md:flex md:columns-1">
+        <div className="md:flex md:columns-3">
           <div className="md:w-1/4 bg-blue-500 ">
             <Navbar />
           </div>

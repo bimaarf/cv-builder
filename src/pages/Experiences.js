@@ -70,9 +70,9 @@ export const Experiences = () => {
   }, []);
   return (
     <>
-      <div className="md:flex md:columns-2 mt-4 xl:w-3/4">
-        <div className="md:w-2/4">
-          <div className="shadow-md rounded px-8 pt-6 pb-8 mb-4">
+      <div className="md:flex md:columns-2 mt-4 xl:w-full">
+        <div className="md:w-3/4 shadow-md">
+          <div className="rounded px-8 pt-6 pb-8 mb-4">
             <div className="flex justify-between text-xs">
               <h1 className="md:text-3xl mb-4 text-sky-600 font-bold ml-20 text-center ">
                 Let's start with your header
@@ -223,7 +223,7 @@ export const Experiences = () => {
           </div>
         </div>
 
-        <div className="md:w-2/4 scale-75 grid text-2xs">
+        <div className="md:w-2/4 grid text-2xs">
           <OutputCV
             componentRef={componentRef}
             inputForm={inputForm}
