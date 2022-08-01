@@ -1,8 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import ReactToPrint from "react-to-print";
 import { OutputCV } from "./Components/OutputCV";
 export const Experiences = () => {
   const componentRef = useRef();
+  const navRedirect = useNavigate()
   const [inputForm, setInputForm] = useState({
     summary: "",
   });
@@ -58,6 +60,7 @@ export const Experiences = () => {
       "experiences-workList",
       JSON.stringify(experiencesList)
     );
+    navRedirect('/education')
   };
   const workList = JSON.parse(localStorage.getItem("experiences-workList"));
   useEffect(() => {
@@ -67,12 +70,12 @@ export const Experiences = () => {
   }, []);
   return (
     <>
-      <div className="md:flex md:columns-2 mt-4 xl:w-full">
+      <div className="md:flex md:columns-2 xl:w-full">
         <div className="md:w-3/4 shadow-md">
           <div className="rounded px-8 pt-6 pb-8 mb-4">
             <div className="flex justify-between text-xs">
               <h1 className="md:text-3xl mb-4 text-sky-600 font-bold ml-20 text-center ">
-                Let's start with your header
+                Let's start with your experience
               </h1>
 
               <ReactToPrint
@@ -170,11 +173,11 @@ export const Experiences = () => {
                     />
                   </div>
                 </div>
-                <div className="flex justify-between">
+                <div className="flex justify-between float-right gap-4">
                   {experiencesList.length !== 1 && (
                     <button
                       id={`del${i}`}
-                      className="bg-red-700 hover:bg-red-800 px-5 py-3 rounded-lg text-white"
+                      className="bg-red-700 hover:bg-red-800 px-5 py-3 my-2 rounded-lg text-white"
                       onClick={() => handleDelRow(i)}
                     >
                       Remove
@@ -182,7 +185,7 @@ export const Experiences = () => {
                   )}
                   {experiencesList.length - 1 === i ? (
                     <button
-                      className={`bg-blue-500 hover:bg-blue-600 px-5 py-3 rounded-lg text-white ${
+                      className={`bg-blue-500 hover:bg-blue-600 px-5 py-3 my-2 rounded-lg text-white ${
                         i > 5 && "hidden"
                       }`}
                       onClick={handleAddRow}
@@ -201,7 +204,7 @@ export const Experiences = () => {
               onClick={storeExperiences}
               className="bg-blue-500 hover:bg-blue-600 px-5 py-3 rounded-lg text-white"
             >
-              Next
+              Next Education
             </button>
           </div>
         </div>

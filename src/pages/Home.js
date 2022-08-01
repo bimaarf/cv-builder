@@ -53,7 +53,7 @@ function Home() {
     localStorage.setItem("header-email", inputForm.email);
     localStorage.setItem("header-phone", inputForm.phone);
     localStorage.setItem("header-summary", inputForm.summary);
-    navRedirect("/experiences");
+    navRedirect("/experience");
   };
   const auto_grow = (e) => {
     e.target.style.height = "inherit";
@@ -298,6 +298,7 @@ function Home() {
                   value={inputForm.summary}
                   name="summary"
                   rows={8}
+                  maxLength={300}
                   className=" appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                   id="summary"
                   type="text"
@@ -311,7 +312,7 @@ function Home() {
                   type="submit"
                   className="text-white rounded-sm hover:bg-sky-600 bg-sky-500 py-2 px-10"
                 >
-                  Next Experiences
+                  Next Experience
                 </button>
               </div>
             </form>

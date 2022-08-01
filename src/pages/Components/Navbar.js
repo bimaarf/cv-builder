@@ -18,14 +18,14 @@ export const Navbar = () => {
           </li>
           <li className=" text-white md:py-3 md:px-12 md:w-full rounded-lg flex justify-start">
             <BsCheckSquare className="md:text-xl" />
-            <Link to="/experiences" className="md:text-2xl -mt-2 ml-2">
-              Experiences
+            <Link to="/experience" className="md:text-2xl -mt-2 ml-2">
+              Experience
             </Link>
           </li>
           <li className=" text-white md:py-3 md:px-12 md:w-full rounded-lg flex justify-start">
             <BsCheckSquare className="md:text-xl" />
-            <Link to="/educations" className="md:text-2xl -mt-2 ml-2">
-              Educations
+            <Link to="/education" className="md:text-2xl -mt-2 ml-2">
+              Education
             </Link>
           </li>
         </ul>
