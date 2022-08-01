@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import ReactToPrint from "react-to-print";
 import { OutputCV } from "./Components/OutputCV";
 import { useNavigate } from "react-router-dom";
-
+import { toast } from "react-toastify";
 function Home() {
   const componentRef = useRef();
   const navRedirect = useNavigate();
@@ -15,16 +15,21 @@ function Home() {
     postalCode: localStorage.getItem("header-postalCode"),
     phone: localStorage.getItem("header-phone"),
     email: localStorage.getItem("header-email"),
+    summary: localStorage.getItem("header-summary"),
   });
   const [imageFormat, setImageFormat] = useState("");
   const handleInputImage = (e) => {
     const file = e.target.files[0];
-    const reader = new FileReader();
-    reader.addEventListener("load", () => {
-      localStorage.setItem("header-image", reader.result);
-      setImageFormat(reader.result);
-    });
-    reader.readAsDataURL(file);
+    if (!file.name.match(/\.(jpg|jpeg|png|gif)$/)) {
+      toast.error("file format not supported");
+    } else {
+      const reader = new FileReader();
+      reader.addEventListener("load", () => {
+        localStorage.setItem("header-image", reader.result);
+        setImageFormat(reader.result);
+      });
+      reader.readAsDataURL(file);
+    }
   };
 
   const handleInput = (e) => {
@@ -46,8 +51,19 @@ function Home() {
     localStorage.setItem("header-postalCode", inputForm.postalCode);
     localStorage.setItem("header-phone", inputForm.phone);
     localStorage.setItem("header-email", inputForm.email);
+    localStorage.setItem("header-phone", inputForm.phone);
+    localStorage.setItem("header-summary", inputForm.summary);
+    navRedirect("/experiences");
   };
-
+  const auto_grow = (e) => {
+    e.target.style.height = "inherit";
+    e.target.style.height = `${e.target.scrollHeight}px`;
+  };
+  const handleDelImage = (e) => {
+    e.preventDefault();
+    localStorage.removeItem("header-image");
+    navRedirect("/");
+  };
   return (
     <>
       <div className="md:flex md:columns-2  xl:w-full ">
@@ -84,14 +100,13 @@ function Home() {
                               <img
                                 id="myImg"
                                 src={localStorage.getItem("header-image")}
-                                className=" text-gray-400 group-hover:text-gray-600 -mt-10 w-full h-40 object-cover overflow-hidden"
+                                className=" text-gray-400 group-hover:text-gray-600 -mt-10 w-full h-36 object-cover object-top"
                                 alt={localStorage.getItem("header-image")}
                               />
                               <button
-                                onClick={(e) =>
-                                  localStorage.removeItem("header-image")
-                                }
-                                className="absolute ml-28 mt-24 text-white"
+                                type="button"
+                                onClick={handleDelImage}
+                                className="absolute ml-28 mt-20 text-gray-300 hover:text-yellow-500"
                               >
                                 <i className="fa fa-repeat"></i>
                               </button>
@@ -112,7 +127,10 @@ function Home() {
                                   d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
                                 />
                               </svg>
-                              <p className="text-gray-200 text-xs mt-8">
+                              <p className="text-gray-200 text-xs mt-5">
+                                Photo
+                              </p>
+                              <p className="text-gray-200 text-xs mt-1">
                                 (optional)
                               </p>
                             </>
@@ -267,6 +285,27 @@ function Home() {
                   />
                 </div>
               </div>
+              <div className="w-2/4">
+                <label
+                  className="block text-gray-700 text-sm mb-2"
+                  htmlFor="firstName"
+                >
+                  Summary
+                </label>
+                <textarea
+                  onKeyDown={auto_grow}
+                  onChange={handleInput}
+                  value={inputForm.summary}
+                  name="summary"
+                  rows={8}
+                  className=" appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  id="summary"
+                  type="text"
+                  placeholder="e.g. introduce yourself and your daily life"
+                >
+                  {" "}
+                </textarea>
+              </div>
               <div className="flex justify-end">
                 <button
                   type="submit"
@@ -280,7 +319,11 @@ function Home() {
         </div>
 
         <div className="md:w-2/4 grid text-2xs">
-          <OutputCV componentRef={componentRef} inputForm={inputForm} />
+          <OutputCV
+            imageFormat={imageFormat}
+            componentRef={componentRef}
+            inputForm={inputForm}
+          />
         </div>
       </div>
     </>

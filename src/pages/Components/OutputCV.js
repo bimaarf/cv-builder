@@ -1,13 +1,18 @@
 import React from "react";
 import { useLocation } from "react-router-dom";
-export const OutputCV = ({ componentRef, inputForm, experiencesList }) => {
+export const OutputCV = ({
+  componentRef,
+  inputForm,
+  experiencesList,
+  imageFormat,
+}) => {
   const location = useLocation();
   return (
     <div className="border scale-75 border-gray-200" style={{ height: 800 }}>
       <div ref={componentRef}>
         <div className="bg-blue-400 h-8 mx-4"></div>
-        <div className="flex  p-4">
-          <div className="w-3/4 pr-1">
+        <div className="flex p-4">
+          <div className="w-3/4 pr-2">
             <div className="border-b-4 border-sky-400 pt-2 pb-2">
               <h1
                 className={`${
@@ -38,6 +43,7 @@ export const OutputCV = ({ componentRef, inputForm, experiencesList }) => {
               </p>
             </div>
             {/* Summary */}
+            {/* Experiences */}
             <div className="mt-4 pb-2 border-b-4 border-sky-400">
               <div className="flex h-6">
                 <h2 className="font-bold">SUMMARY</h2>
@@ -48,10 +54,11 @@ export const OutputCV = ({ componentRef, inputForm, experiencesList }) => {
                   inputForm.summary === "" && "h-40"
                 } text-sm pt-2 pb-4`}
               >
-                {inputForm.summary}
+                {location.pathname === "/"
+                  ? inputForm.summary
+                  : localStorage.getItem("header-summary")}
               </p>
             </div>
-            {/* Experiences */}
             {location.pathname !== "/" && (
               <>
                 <div className={`mt-4 pb-2 border-b-4 border-sky-400 mb-2 `}>
@@ -86,9 +93,22 @@ export const OutputCV = ({ componentRef, inputForm, experiencesList }) => {
             )}
           </div>
           <div
-            className="w-1/4 pl-1 border-l border-dotted break-all"
+            className="w-1/4 pl-2 border-l border-dotted break-all"
             style={{ height: 530 }}
           >
+            <div className="flex justify-center">
+              {localStorage.getItem("header-image") && (
+                <div className="flex items-center justify-center w-32 scale-95">
+                  <div className="flex items-center justify-center w-full">
+                    <img
+                      className="xl rounded-lg w-full h-36 object-cover object-top "
+                      src={localStorage.getItem("header-image")}
+                      alt=""
+                    />
+                  </div>
+                </div>
+              )}
+            </div>
             <h1 className="border-b-2 border-sky-300 font-bold">Contact</h1>
             <div style={{ fontSize: 12 }}>
               <p className="mt-1 text-gray-700 font-semibold">Address</p>

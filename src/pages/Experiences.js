@@ -22,10 +22,7 @@ export const Experiences = () => {
     e.persist();
     setInputForm({ ...inputForm, [e.target.name]: e.target.value });
   };
-  const auto_grow = (e) => {
-    e.target.style.height = "inherit";
-    e.target.style.height = `${e.target.scrollHeight}px`;
-  };
+
   const handleChangeExperience = (e, index) => {
     const { name, value } = e.target;
     const list = [...experiencesList];
@@ -99,19 +96,7 @@ export const Experiences = () => {
               >
                 Summary
               </label>
-              <textarea
-                onKeyDown={auto_grow}
-                onChange={handleInput}
-                value={inputForm.summary}
-                name="summary"
-                rows={8}
-                className=" appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                id="summary"
-                type="text"
-                placeholder="e.g. introduce yourself and your daily life"
-              >
-                {" "}
-              </textarea>
+              
             </div>
             {experiencesList.slice(0, experiencesList.length).map((x, i) => (
               <div key={i} className="mb-4">
