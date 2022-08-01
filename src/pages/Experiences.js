@@ -113,8 +113,6 @@ export const Experiences = () => {
                 {" "}
               </textarea>
             </div>
-            <hr />
-
             {experiencesList.slice(0, experiencesList.length).map((x, i) => (
               <div key={i} className="mb-4">
                 <div className="mb-4">
