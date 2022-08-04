@@ -82,34 +82,40 @@ export const OutputCV = ({ componentRef, inputForm, experiencesList }) => {
               </>
             ) : (
               <>
-                <div className={`mt-4 pb-2 border-b-4 border-sky-400 mb-2 `}>
-                  <div className="flex h-6 mb-4">
-                    <h2 className="font-bold">EXPERIENCE</h2>
-                    <span className="w-full ml-1 bg-sky-100"></span>
-                  </div>
-                  {workListLocal.map((items, index) => (
+                {workListLocal && (
+                  <>
                     <div
-                      key={index}
-                      className={`${
-                        workListLocal.length > 4 && "scale-75 -ml-10"
-                      } mt-2 border border-gray-200 p-3`}
+                      className={`mt-4 pb-2 border-b-4 border-sky-400 mb-2 `}
                     >
-                      <h1 className="font-bold">
-                        {items.jobTitle}
-                        <span className="font-normal">
-                          , {items.startDate} - {items.endDate}
-                        </span>
-                      </h1>
-                      <p className="font-bold">
-                        {items.employer}
-                        <span className="font-normal">
-                          {" "}
-                          - {items.cityProvince}, {items.country}
-                        </span>
-                      </p>
+                      <div className="flex h-6 mb-4">
+                        <h2 className="font-bold">EXPERIENCE</h2>
+                        <span className="w-full ml-1 bg-sky-100"></span>
+                      </div>
+                      {workListLocal.map((items, index) => (
+                        <div
+                          key={index}
+                          className={`${
+                            workListLocal.length > 4 && "scale-75 -ml-10"
+                          } mt-2 border border-gray-200 p-3`}
+                        >
+                          <h1 className="font-bold">
+                            {items.jobTitle}
+                            <span className="font-normal">
+                              , {items.startDate} - {items.endDate}
+                            </span>
+                          </h1>
+                          <p className="font-bold">
+                            {items.employer}
+                            <span className="font-normal">
+                              {" "}
+                              - {items.cityProvince}, {items.country}
+                            </span>
+                          </p>
+                        </div>
+                      ))}
                     </div>
-                  ))}
-                </div>
+                  </>
+                )}
               </>
             )}
           </div>

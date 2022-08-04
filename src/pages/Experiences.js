@@ -4,7 +4,7 @@ import ReactToPrint from "react-to-print";
 import { OutputCV } from "./Components/OutputCV";
 export const Experiences = () => {
   const componentRef = useRef();
-  const navRedirect = useNavigate()
+  const navRedirect = useNavigate();
   const [inputForm, setInputForm] = useState({
     summary: "",
   });
@@ -60,7 +60,7 @@ export const Experiences = () => {
       "experiences-workList",
       JSON.stringify(experiencesList)
     );
-    navRedirect('/education')
+    navRedirect("/education");
   };
   const workList = JSON.parse(localStorage.getItem("experiences-workList"));
   useEffect(() => {
@@ -99,7 +99,6 @@ export const Experiences = () => {
               >
                 Summary
               </label>
-              
             </div>
             {experiencesList.slice(0, experiencesList.length).map((x, i) => (
               <div key={i} className="mb-4">
@@ -198,11 +197,18 @@ export const Experiences = () => {
                 </div>
               </div>
             ))}
-
+          </div>
+          <div className="flex justify-center gap-3">
             {/* next */}
             <button
+              onClick={() => navRedirect("/")}
+              className="bg-secondary hover:bg-gray-400 px-10 py-2 rounded-sm text-white"
+            >
+              Back
+            </button>
+            <button
               onClick={storeExperiences}
-              className="bg-blue-500 hover:bg-blue-600 px-5 py-3 rounded-lg text-white"
+              className="bg-sky-500 hover:bg-sky-600 px-10 py-2 rounded-sm text-white"
             >
               Next Education
             </button>
