@@ -45,11 +45,12 @@ export const Education = () => {
       },
     ]);
   };
+  const [stepDone, setStepDone] = useState("!");
   const storeEducation = (e) => {
     e.preventDefault();
-    toast.success("Saved to localstorage");
+    toast.success("Saved to localStorage");
     localStorage.setItem("education-list", JSON.stringify(educationList));
-    //  navRedirect("/education");
+    setStepDone("✔️");
   };
   const years = new Array();
   for (let i = 2030; i > 1990; i--) {
@@ -66,9 +67,27 @@ export const Education = () => {
       <div className="md:flex md:columns-2 xl:w-full">
         <div className="md:w-3/4 shadow-md">
           <div className="rounded px-8 pt-6 pb-8 mb-4">
+            <div className="flex justify-center mb-4">
+              <ul className="steps">
+                <li data-content="✔️" className="px-2 step step-neutral">
+                  Header
+                </li>
+                <li data-content="✔️" className="px-2 step step-neutral">
+                  Experience
+                </li>
+                <li
+                  data-content={stepDone}
+                  className={`px-2 step ${
+                    stepDone === "!" ? "step-secondary" : "step-neutral"
+                  }`}
+                >
+                  Education
+                </li>
+              </ul>
+            </div>
             <div className="flex justify-between text-xs">
-              <h1 className="md:text-3xl mb-4 text-sky-600 font-bold ml-20 text-center ">
-                Let's start with your education
+              <h1 className="md:text-3xl mb-4 text-sky-600 font-bold text-center ">
+                Education
               </h1>
               <ReactToPrint
                 trigger={() => {
@@ -197,7 +216,7 @@ export const Education = () => {
               </div>
             ))}
           </div>
-          <div className="flex justify-center gap-3 mt-10 pb-10">
+          <div className="flex justify-center gap-3 mt-10">
             {/* next */}
             <button
               onClick={() => navRedirect("/experience")}
@@ -211,6 +230,8 @@ export const Education = () => {
             >
               Save
             </button>
+          </div>
+          <div className="flex justify-center mt-4 pb-10">
             <ReactToPrint
               trigger={() => {
                 return (
@@ -227,6 +248,7 @@ export const Education = () => {
           </div>
         </div>
         <div className="md:w-2/4 grid text-2xs">
+          <h1 className="text-center text-sky-900 font-bold text-lg mt-4 -mb-4">Preview</h1>
           <OutputCV componentRef={componentRef} educationList={educationList} />
         </div>
       </div>

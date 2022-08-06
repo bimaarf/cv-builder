@@ -18,22 +18,6 @@ export const OutputCV = ({
         <div className="flex p-4">
           <div className="w-3/4 pr-2">
             <div className="border-b-4 border-sky-400 pt-2 pb-2">
-              {/* <h1 className={` font-bold text-gray-900 text-2xl`}>
-                {location.pathname !== "/"
-                  ? localStorage.getItem("header-firstName")
-                    ? localStorage.getItem("header-firstName")
-                    : inputForm.firstName
-                  : !inputForm.firstName
-                  ? "Your"
-                  : inputForm.firstName}{" "}
-                {location.pathname !== "/"
-                  ? localStorage.getItem("header-lastName")
-                    ? localStorage.getItem("header-lastName")
-                    : inputForm.lastName
-                  : !inputForm.lastName
-                  ? "Name"
-                  : inputForm.lastName}
-              </h1> */}
               {location.pathname === "/" ? (
                 <h1 className={` font-bold text-gray-900 text-2xl`}>
                   {inputForm.firstName ? inputForm.firstName : "Your Name"}
@@ -43,7 +27,8 @@ export const OutputCV = ({
                 </h1>
               ) : (
                 <h1 className={` font-bold text-gray-900 text-2xl`}>
-                  {localStorage.getItem("header-firstName")}
+                  {localStorage.getItem("header-firstName")}{" "}
+                  {localStorage.getItem("header-lastName")}
                 </h1>
               )}
               <p style={{ fontSize: 8 }}>

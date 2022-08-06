@@ -56,7 +56,7 @@ export const Experiences = ({ setExperienceDone }) => {
   // tes localStorage
   const storeExperiences = (e) => {
     e.preventDefault();
-    setExperienceDone('done')
+    setExperienceDone("done");
     localStorage.setItem("experiences", "done");
     localStorage.setItem(
       "experiences-workList",
@@ -66,7 +66,7 @@ export const Experiences = ({ setExperienceDone }) => {
   };
   const noExperiences = (e) => {
     e.preventDefault();
-    setExperienceDone('done')
+    setExperienceDone("done");
     localStorage.setItem("experiences", "no-experiences");
     localStorage.getItem("experiences-workList") &&
       localStorage.removeItem("experiences-workList");
@@ -83,9 +83,22 @@ export const Experiences = ({ setExperienceDone }) => {
       <div className="md:flex md:columns-2 xl:w-full">
         <div className="md:w-3/4 shadow-md">
           <div className="rounded px-8 pt-6 pb-8 mb-4">
+            <div className="flex justify-center mb-4">
+              <ul className="steps">
+                <li data-content="✔️" className="px-2 step step-neutral">
+                  Header
+                </li>
+                <li data-content="!" className="px-2 step step-secondary">
+                  Experience
+                </li>
+                <li data-content="?" className="px-2 step step-neutral">
+                  Education
+                </li>
+              </ul>
+            </div>
             <div className="flex justify-between text-xs">
-              <h1 className="md:text-3xl mb-4 text-sky-600 font-bold ml-20 text-center ">
-                Let's start with your experience
+              <h1 className="md:text-3xl mb-4 text-sky-600 font-bold text-center ">
+                Experience
               </h1>
 
               <ReactToPrint
@@ -232,10 +245,10 @@ export const Experiences = ({ setExperienceDone }) => {
               Next Education
             </button>
           </div>
-          <div className="flex justify-center mt-4">
+          <div className="flex justify-center mt-4 pb-10">
             <button
               onClick={noExperiences}
-              className="bg-sky-500 hover:bg-sky-600 px-10 py-2 rounded-sm text-white"
+              className="bg-sky-400 hover:bg-gray-400 px-10 py-2 rounded-sm text-white"
             >
               I have no experience
             </button>
@@ -243,6 +256,9 @@ export const Experiences = ({ setExperienceDone }) => {
         </div>
 
         <div className="md:w-2/4 grid text-2xs">
+          <h1 className="text-center text-sky-900 font-bold text-lg mt-4 -mb-4">
+            Preview
+          </h1>
           <OutputCV
             componentRef={componentRef}
             inputForm={inputForm}

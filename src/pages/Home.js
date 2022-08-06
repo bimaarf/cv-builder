@@ -36,7 +36,6 @@ function Home({ setHeaderDone }) {
     e.persist();
     setInputForm({ ...inputForm, [e.target.name]: e.target.value });
   };
-
   const storeHeader = () => {
     setHeaderDone("done");
     localStorage.setItem("header", "done");
@@ -70,8 +69,21 @@ function Home({ setHeaderDone }) {
       <div className="md:flex md:columns-2  xl:w-full ">
         <div className="md:w-3/4 shadow-md">
           <div className="rounded px-8 pt-6 pb-8 mb-4">
+            <div className="flex justify-center mb-4">
+              <ul className="steps">
+                <li data-content="!" className="px-2 step step-secondary">
+                  Header
+                </li>
+                <li data-content="?" className="px-2 step step-neutral">
+                  Experience
+                </li>
+                <li data-content="?" className="px-2 step step-neutral">
+                  Education
+                </li>
+              </ul>
+            </div>
             <div className="flex justify-between text-xs">
-              <h1 className="md:text-3xl mb-4 text-sky-600 font-bold ml-20 text-center ">
+              <h1 className="md:text-3xl mb-4 text-sky-600 font-bold text-center ">
                 Let's start with your header
               </h1>
 
@@ -321,6 +333,9 @@ function Home({ setHeaderDone }) {
         </div>
 
         <div className="md:w-2/4 grid text-2xs">
+          <h1 className="text-center text-sky-900 font-bold text-lg mt-4 -mb-4">
+            Preview
+          </h1>
           <OutputCV
             imageFormat={imageFormat}
             componentRef={componentRef}

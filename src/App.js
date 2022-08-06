@@ -8,6 +8,7 @@ import { Experiences } from "./pages/Experiences";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useState } from "react";
+import { NotFound } from "./pages/NotFound";
 function App() {
   const [headerDone, setHeaderDone] = useState();
   const [experienceDone, setExperienceDone] = useState();
@@ -15,7 +16,7 @@ function App() {
     <>
       <ToastContainer />
       <div className="">
-        <div className="md:flex md:columns-3">
+        <div className="md:flex md:columns-2 lg:columns-3">
           <div className="md:w-1/4 bg-blue-500 ">
             <Navbar headerDone={headerDone} experienceDone={experienceDone} />
           </div>
@@ -31,6 +32,7 @@ function App() {
               element={<Experiences setExperienceDone={setExperienceDone} />}
             />
             <Route path="/education" element={<Education />} />
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </div>
       </div>
