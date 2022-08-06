@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ReactToPrint from "react-to-print";
 import { OutputCV } from "./Components/OutputCV";
-export const Experiences = () => {
+export const Experiences = ({ setExperienceDone }) => {
   const componentRef = useRef();
   const navRedirect = useNavigate();
   const [inputForm, setInputForm] = useState({
@@ -56,17 +56,27 @@ export const Experiences = () => {
   // tes localStorage
   const storeExperiences = (e) => {
     e.preventDefault();
+    setExperienceDone('done')
+    localStorage.setItem("experiences", "done");
     localStorage.setItem(
       "experiences-workList",
       JSON.stringify(experiencesList)
     );
     navRedirect("/education");
   };
+  const noExperiences = (e) => {
+    e.preventDefault();
+    setExperienceDone('done')
+    localStorage.setItem("experiences", "no-experiences");
+    localStorage.getItem("experiences-workList") &&
+      localStorage.removeItem("experiences-workList");
+    navRedirect("/education");
+  };
+
   const workList = JSON.parse(localStorage.getItem("experiences-workList"));
   useEffect(() => {
-    if (workList) {
-      setExperiencesList(workList);
-    }
+    workList && setExperiencesList(workList);
+    localStorage.getItem("header") !== "done" && navRedirect("/");
   }, []);
   return (
     <>
@@ -138,7 +148,7 @@ export const Experiences = () => {
                     />
                   </div>
                   <div className="w-2/4">
-                    <label className="text-sm">Province</label>
+                    <label className="text-sm">Country</label>
                     <input
                       className=" appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                       name="country"
@@ -156,21 +166,30 @@ export const Experiences = () => {
                     <input
                       className=" appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                       name="startDate"
-                      type="date"
+                      type="month"
                       value={x.startDate}
                       onChange={(e) => handleChangeExperience(e, i)}
                     />
                   </div>
-                  <div className="w-2/4">
-                    <label className="text-sm">End Date</label>
-                    <input
-                      className=" appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                      name="endDate"
-                      type="date"
-                      value={x.endDate}
-                      onChange={(e) => handleChangeExperience(e, i)}
-                    />
-                  </div>
+                  {x.startDate !== "" && (
+                    <div className="w-2/4">
+                      {/* currently working here */}
+                      {x.endDate === "" ? (
+                        <label className="text-sm text-yellow-400">
+                          Currently working here
+                        </label>
+                      ) : (
+                        <label className="text-sm">End Date</label>
+                      )}
+                      <input
+                        className=" appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        name="endDate"
+                        type="month"
+                        value={x.endDate}
+                        onChange={(e) => handleChangeExperience(e, i)}
+                      />
+                    </div>
+                  )}
                 </div>
                 <div className="flex justify-between float-right gap-4">
                   {experiencesList.length !== 1 && (
@@ -198,7 +217,7 @@ export const Experiences = () => {
               </div>
             ))}
           </div>
-          <div className="flex justify-center gap-3">
+          <div className="flex justify-center gap-3 mt-10">
             {/* next */}
             <button
               onClick={() => navRedirect("/")}
@@ -211,6 +230,14 @@ export const Experiences = () => {
               className="bg-sky-500 hover:bg-sky-600 px-10 py-2 rounded-sm text-white"
             >
               Next Education
+            </button>
+          </div>
+          <div className="flex justify-center mt-4">
+            <button
+              onClick={noExperiences}
+              className="bg-sky-500 hover:bg-sky-600 px-10 py-2 rounded-sm text-white"
+            >
+              I have no experience
             </button>
           </div>
         </div>

@@ -1,9 +1,11 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import ReactToPrint from "react-to-print";
+import { toast } from "react-toastify";
 import { OutputCV } from "./Components/OutputCV";
-import format from "date-fns/format";
 export const Education = () => {
   const componentRef = useRef();
+  const navRedirect = useNavigate();
   const [educationList, setEducationList] = useState([
     {
       schoolName: "",
@@ -43,6 +45,22 @@ export const Education = () => {
       },
     ]);
   };
+  const storeEducation = (e) => {
+    e.preventDefault();
+    toast.success("Saved to localstorage");
+    localStorage.setItem("education-list", JSON.stringify(educationList));
+    //  navRedirect("/education");
+  };
+  const years = new Array();
+  for (let i = 2030; i > 1990; i--) {
+    years.push(i);
+  }
+  useEffect(() => {
+    localStorage.getItem("education-list") &&
+      setEducationList(JSON.parse(localStorage.getItem("education-list")));
+    !localStorage.getItem("experiences") && navRedirect("/experience");
+  }, []);
+
   return (
     <>
       <div className="md:flex md:columns-2 xl:w-full">
@@ -64,105 +82,152 @@ export const Education = () => {
                 content={() => componentRef.current}
               />
             </div>
-            <form>
-              {educationList.slice(0, educationList.length).map((x, i) => (
-                <div key={i} className="mb-4">
-                  <div className="mb-4">
-                    <label className="text-sm">School Name</label>
+            {educationList.slice(0, educationList.length).map((x, i) => (
+              <div key={i} className="mb-4">
+                <div className="mb-4">
+                  <label className="text-sm">School Name</label>
+                  <input
+                    className=" appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    name="schoolName"
+                    type="text"
+                    placeholder="e.g. University of San Carlos"
+                    value={x.schoolName}
+                    onChange={(e) => handleChangeEdu(e, i)}
+                  />
+                </div>
+                <div className="mb-4 flex columns-2 gap-1">
+                  <div className="w-2/4">
+                    <label className="text-wm">Degree</label>
+                    <span className="text-gray-400 text-2xs ml-1">
+                      (optional)
+                    </span>
                     <input
-                      className=" appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                      name="schoolName"
-                      type="text"
-                      placeholder="e.g. University of San Carlos"
-                      value={x.schoolName}
                       onChange={(e) => handleChangeEdu(e, i)}
+                      value={x.degree}
+                      name="degree"
+                      className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                      placeholder="e.g. Ph.D"
                     />
                   </div>
-                  <div className="mb-4 flex columns-2 gap-1">
-                    <div className="w-2/4">
-                      <label className="text-wm">Degree</label>
-                      <span className="text-gray-400 text-2xs ml-1">
-                        (optional)
-                      </span>
-                      <input
-                        onChange={(e) => handleChangeEdu(e, i)}
-                        value={x.degree}
-                        name="degree"
-                        className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                        placeholder="e.g. Ph.D"
-                      />
-                    </div>
-                    <div className="w-2/4">
-                      <label className="text-wm">Field of Study</label>
-                      <input
-                        onChange={(e) => handleChangeEdu(e, i)}
-                        value={x.fieldOfStudy}
-                        name="fieldOfStudy"
-                        className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                        placeholder="e.g. Accounting Technology"
-                      />
-                    </div>
-                  </div>
-                  {/* date */}
-                  <div className="mb-4 md:flex md:columns-2 gap-1">
-                    <div className="md:w-2/4 mt-2 md:mt-0">
-                      <label className="text-sm">Start Date</label>
-                      <input
-                        className=" appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                        name="startDate"
-                        type="month"
-                        value={x.startDate}
-                        onChange={(e) => handleChangeEdu(e, i)}
-                      />
-                    </div>
-                    <div className="md:w-2/4 mt-2 md:mt-0">
-                      <label className="text-sm">End Date</label>
-                      <input
-                        className=" appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                        name="endDate"
-                        type={x.endDate.length > 0 ? "month" : "text"}
-                        value={x.endDate}
-                        placeholder="I'm currently studying here"
-                        onFocus={(e) => (e.target.type = "month")}
-                        onBlur={(e) =>
-                          x.endDate.length > 0
-                            ? (e.target.type = "month")
-                            : (e.target.type = "text")
-                        }
-                        onChange={(e) => handleChangeEdu(e, i)}
-                      />
-                    </div>
-                  </div>
-                  <div className="flex justify-between float-right gap-4">
-                    {educationList.length !== 1 && (
-                      <button
-                        id={`del${i}`}
-                        className="bg-red-700 hover:bg-red-800 px-5 py-3 my-2 rounded-lg text-white"
-                        onClick={() => handleDelRow(i)}
-                      >
-                        Remove
-                      </button>
-                    )}
-                    {educationList.length - 1 === i ? (
-                      <button
-                        className={`bg-blue-500 hover:bg-blue-600 px-5 py-3 my-2 rounded-lg text-white ${
-                          i > 5 && "hidden"
-                        }`}
-                        onClick={handleAddRow}
-                      >
-                        Add
-                      </button>
-                    ) : (
-                      ""
-                    )}
+                  <div className="w-2/4">
+                    <label className="text-wm">Field of Study</label>
+                    <input
+                      onChange={(e) => handleChangeEdu(e, i)}
+                      value={x.fieldOfStudy}
+                      name="fieldOfStudy"
+                      className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                      placeholder="e.g. Accounting Technology"
+                    />
                   </div>
                 </div>
-              ))}
-            </form>
+                {/* date */}
+                <div className="mb-4 flex columns-2 gap-1">
+                  <div className="w-2/4 mt-2 md:mt-0">
+                    <label className="text-sm">Start Date</label>
+                    <span className="text-gray-400 text-2xs ml-1">
+                      (optional)
+                    </span>
+                    <select
+                      name="startDate"
+                      onChange={(e) => handleChangeEdu(e, i)}
+                      className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    >
+                      <option value="">-- Select --</option>
+                      {years.map((o, key) => (
+                        <option
+                          value={o}
+                          key={key}
+                          selected={x.startDate == o && "selected"}
+                        >
+                          {o}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className="w-2/4 mt-2 md:mt-0">
+                    <label className="text-sm">End Date</label>
+                    <span className="text-gray-400 text-2xs ml-1">
+                      (optional)
+                    </span>
+                    <select
+                      name="endDate"
+                      onChange={(e) => handleChangeEdu(e, i)}
+                      className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    >
+                      <option value="">-- Select --</option>
+
+                      <option className="bg-gray-200" value="Sekarang">
+                        I'm currently studying here
+                      </option>
+                      {years.map((o, key) => (
+                        <option
+                          value={o}
+                          key={key}
+                          selected={x.endDate == o && "selected"}
+                        >
+                          {o}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+                <div className="flex justify-between float-right gap-4">
+                  {educationList.length !== 1 && (
+                    <button
+                      id={`del${i}`}
+                      className="bg-red-700 hover:bg-red-800 px-5 py-3 my-2 rounded-lg text-white"
+                      onClick={() => handleDelRow(i)}
+                    >
+                      Remove
+                    </button>
+                  )}
+                  {educationList.length - 1 === i ? (
+                    <button
+                      className={`bg-blue-500 hover:bg-blue-600 px-5 py-3 my-2 rounded-lg text-white ${
+                        i > 5 && "hidden"
+                      }`}
+                      onClick={handleAddRow}
+                    >
+                      Add
+                    </button>
+                  ) : (
+                    ""
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="flex justify-center gap-3 mt-10 pb-10">
+            {/* next */}
+            <button
+              onClick={() => navRedirect("/experience")}
+              className="bg-secondary hover:bg-gray-400 px-10 py-2 rounded-sm text-white"
+            >
+              Back
+            </button>
+            <button
+              onClick={storeEducation}
+              className="bg-sky-500 hover:bg-sky-600 px-10 py-2 rounded-sm text-white"
+            >
+              Save
+            </button>
+            <ReactToPrint
+              trigger={() => {
+                return (
+                  <button
+                    onClick={storeEducation}
+                    className="bg-lime-700 hover:bg-lime-800 px-10 py-2 rounded-sm text-white"
+                  >
+                    Download CV
+                  </button>
+                );
+              }}
+              content={() => componentRef.current}
+            />
           </div>
         </div>
         <div className="md:w-2/4 grid text-2xs">
-          <OutputCV componentRef={componentRef} />
+          <OutputCV componentRef={componentRef} educationList={educationList} />
         </div>
       </div>
     </>

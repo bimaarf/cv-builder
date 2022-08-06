@@ -3,7 +3,7 @@ import ReactToPrint from "react-to-print";
 import { OutputCV } from "./Components/OutputCV";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-function Home() {
+function Home({ setHeaderDone }) {
   const componentRef = useRef();
   const navRedirect = useNavigate();
   const [inputForm, setInputForm] = useState({
@@ -38,6 +38,7 @@ function Home() {
   };
 
   const storeHeader = () => {
+    setHeaderDone("done");
     localStorage.setItem("header", "done");
     localStorage.setItem("header-firstName", inputForm.firstName);
     localStorage.setItem("header-lastName", inputForm.lastName);
@@ -285,7 +286,7 @@ function Home() {
                   />
                 </div>
               </div>
-              <div className="w-2/4">
+              <div className="w-4/4">
                 <label
                   className="block text-gray-700 text-sm mb-2"
                   htmlFor="firstName"
@@ -298,7 +299,7 @@ function Home() {
                   value={inputForm.summary}
                   name="summary"
                   rows={8}
-                  maxLength={300}
+                  maxLength={500}
                   className=" appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                   id="summary"
                   type="text"

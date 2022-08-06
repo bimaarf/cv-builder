@@ -7,19 +7,30 @@ import { Navbar } from "./pages/Components/Navbar";
 import { Experiences } from "./pages/Experiences";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useState } from "react";
 function App() {
+  const [headerDone, setHeaderDone] = useState();
+  const [experienceDone, setExperienceDone] = useState();
   return (
     <>
-    <ToastContainer/>
+      <ToastContainer />
       <div className="">
         <div className="md:flex md:columns-3">
           <div className="md:w-1/4 bg-blue-500 ">
-            <Navbar />
+            <Navbar headerDone={headerDone} experienceDone={experienceDone} />
           </div>
           <Routes>
-            <Route exact path="/" element={<Home />} />
-            <Route exact path="/experience" element={<Experiences />} />
-            <Route  path="/education" element={<Education />} />
+            <Route
+              exact
+              path="/"
+              element={<Home setHeaderDone={setHeaderDone} />}
+            />
+            <Route
+              exact
+              path="/experience"
+              element={<Experiences setExperienceDone={setExperienceDone} />}
+            />
+            <Route path="/education" element={<Education />} />
           </Routes>
         </div>
       </div>

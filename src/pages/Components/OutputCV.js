@@ -1,18 +1,24 @@
 import React, { useEffect } from "react";
 import { useLocation } from "react-router-dom";
-export const OutputCV = ({ componentRef, inputForm, experiencesList }) => {
+export const OutputCV = ({
+  componentRef,
+  inputForm,
+  experiencesList,
+  educationList,
+}) => {
   const location = useLocation();
   const workListLocal = JSON.parse(
     localStorage.getItem("experiences-workList")
   );
+  const eduListLocal = JSON.parse(localStorage.getItem("education-list"));
   return (
-    <div className="border scale-75 border-gray-200" style={{ height: 800 }}>
+    <div className="border scale-95 border-gray-200" style={{ height: 1200 }}>
       <div ref={componentRef}>
         <div className="bg-blue-400 h-8 mx-4"></div>
         <div className="flex p-4">
           <div className="w-3/4 pr-2">
             <div className="border-b-4 border-sky-400 pt-2 pb-2">
-              <h1 className={` font-bold text-gray-900 text-2xl`}>
+              {/* <h1 className={` font-bold text-gray-900 text-2xl`}>
                 {location.pathname !== "/"
                   ? localStorage.getItem("header-firstName")
                     ? localStorage.getItem("header-firstName")
@@ -27,7 +33,19 @@ export const OutputCV = ({ componentRef, inputForm, experiencesList }) => {
                   : !inputForm.lastName
                   ? "Name"
                   : inputForm.lastName}
-              </h1>
+              </h1> */}
+              {location.pathname === "/" ? (
+                <h1 className={` font-bold text-gray-900 text-2xl`}>
+                  {inputForm.firstName ? inputForm.firstName : "Your Name"}
+                  {inputForm.firstName &&
+                    inputForm.lastName &&
+                    " " + inputForm.lastName}
+                </h1>
+              ) : (
+                <h1 className={` font-bold text-gray-900 text-2xl`}>
+                  {localStorage.getItem("header-firstName")}
+                </h1>
+              )}
               <p style={{ fontSize: 8 }}>
                 {location.pathname !== "/"
                   ? localStorage.getItem("header-firstName")
@@ -49,7 +67,7 @@ export const OutputCV = ({ componentRef, inputForm, experiencesList }) => {
                   : localStorage.getItem("header-summary")}
               </p>
             </div>
-            {location.pathname === "/experiences" ? (
+            {location.pathname === "/experience" ? (
               <>
                 <div className={`mt-4 pb-2 border-b-4 border-sky-400 mb-2 `}>
                   <div className="flex h-6 mb-4">
@@ -65,9 +83,14 @@ export const OutputCV = ({ componentRef, inputForm, experiencesList }) => {
                     >
                       <h1 className="font-bold">
                         {items.jobTitle}
-                        <span className="font-normal">
-                          , {items.startDate} - {items.endDate}
-                        </span>
+                        {items.startDate && (
+                          <span className="font-normal">
+                            , {items.startDate}{" "}
+                            {items.endDate
+                              ? "-" + items.endDate
+                              : " - Sekarang"}
+                          </span>
+                        )}
                       </h1>
                       <p className="font-bold">
                         {items.employer}
@@ -100,9 +123,14 @@ export const OutputCV = ({ componentRef, inputForm, experiencesList }) => {
                         >
                           <h1 className="font-bold">
                             {items.jobTitle}
-                            <span className="font-normal">
-                              , {items.startDate} - {items.endDate}
-                            </span>
+                            {items.startDate && (
+                              <span className="font-normal">
+                                , {items.startDate}{" "}
+                                {items.endDate
+                                  ? "-" + items.endDate
+                                  : " - Sekarang"}
+                              </span>
+                            )}
                           </h1>
                           <p className="font-bold">
                             {items.employer}
@@ -111,6 +139,82 @@ export const OutputCV = ({ componentRef, inputForm, experiencesList }) => {
                               - {items.cityProvince}, {items.country}
                             </span>
                           </p>
+                        </div>
+                      ))}
+                    </div>
+                  </>
+                )}
+              </>
+            )}
+            {/* education */}
+            {location.pathname === "/education" ? (
+              <>
+                <div className={`mt-4 pb-2 border-b-4 border-sky-400 mb-2 `}>
+                  <div className="flex h-6 mb-4">
+                    <h2 className="font-bold">EDUCATION</h2>
+                    <span className="w-full ml-1 bg-sky-100"></span>
+                  </div>
+                  {educationList.map((items, index) => (
+                    <div
+                      key={index}
+                      className={`${
+                        educationList.length > 4 && "scale-75 -ml-10"
+                      } mt-2 border border-gray-200 p-3`}
+                    >
+                      <h1 className="font-bold">
+                        {items.schoolName}
+
+                        {items.startDate && (
+                          <span className="font-normal ml-1">
+                            {items.startDate} - {items.endDate}
+                          </span>
+                        )}
+                      </h1>
+                      {items.degree && (
+                        <span className="font-bold">{items.degree}, </span>
+                      )}
+                      {items.fieldOfStudy && (
+                        <span className="font-bold">{items.fieldOfStudy}</span>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </>
+            ) : (
+              <>
+                {eduListLocal && (
+                  <>
+                    <div
+                      className={`mt-4 pb-2 border-b-4 border-sky-400 mb-2 `}
+                    >
+                      <div className="flex h-6 mb-4">
+                        <h2 className="font-bold">EDUCATION</h2>
+                        <span className="w-full ml-1 bg-sky-100"></span>
+                      </div>
+                      {eduListLocal.map((items, index) => (
+                        <div
+                          key={index}
+                          className={`${
+                            eduListLocal.length > 4 && "scale-75 -ml-10"
+                          } mt-2 border border-gray-200 p-3`}
+                        >
+                          <h1 className="font-bold">
+                            {items.schoolName}
+
+                            {items.startDate && (
+                              <span className="font-normal ml-1">
+                                {items.startDate} - {items.endDate}
+                              </span>
+                            )}
+                          </h1>
+                          {items.degree && (
+                            <span className="font-bold">{items.degree}, </span>
+                          )}
+                          {items.fieldOfStudy && (
+                            <span className="font-bold">
+                              {items.fieldOfStudy}
+                            </span>
+                          )}
                         </div>
                       ))}
                     </div>
