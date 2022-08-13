@@ -18,7 +18,7 @@ export const Navbar = ({ headerDone, experienceDone }) => {
             </Link>
           </li>
           <li className=" text-white md:py-3 md:px-12 md:w-full rounded-lg flex justify-start">
-            {headerDone === 'done' ? (
+            {headerDone || experienceDone ? (
               <>
                 <BsCheckSquare className="md:text-xl" />
                 <Link to="/experience" className="md:text-2xl -mt-2 ml-2">
@@ -33,7 +33,7 @@ export const Navbar = ({ headerDone, experienceDone }) => {
             )}
           </li>
           <li className=" text-white md:py-3 md:px-12 md:w-full rounded-lg flex justify-start">
-            {experienceDone === 'done' ? (
+            {experienceDone ? (
               <>
                 <BsCheckSquare className="md:text-xl" />
                 <Link to="/education" className="md:text-2xl -mt-2 ml-2">

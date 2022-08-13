@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import ReactToPrint from "react-to-print";
 import { OutputCV } from "./Components/OutputCV";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 function Home({ setHeaderDone }) {
   const componentRef = useRef();
@@ -53,6 +53,8 @@ function Home({ setHeaderDone }) {
     localStorage.setItem("header-email", inputForm.email);
     localStorage.setItem("header-phone", inputForm.phone);
     localStorage.setItem("header-summary", inputForm.summary);
+    localStorage.setItem("header-urlList", JSON.stringify(urlList));
+    localStorage.setItem("header-skillList", JSON.stringify(skillList));
     navRedirect("/experience");
   };
   const auto_grow = (e) => {
@@ -64,6 +66,60 @@ function Home({ setHeaderDone }) {
     localStorage.removeItem("header-image");
     navRedirect("/");
   };
+  // url dynamic
+  const [urlList, setUrlList] = useState([]);
+  const handleChangeUrl = (e, index) => {
+    e.persist();
+    const { name, value } = e.target;
+    const list = [...urlList];
+    list[index][name] = value;
+    setUrlList(list);
+  };
+  const handleAddUrl = (e) => {
+    e.preventDefault();
+    setUrlList([
+      ...urlList,
+      {
+        label: "Instagram",
+        url: "",
+      },
+    ]);
+  };
+  const handleDelUrl = (index) => {
+    const list = [...urlList];
+    list.splice(index, 1);
+    setUrlList(list);
+  };
+  const urlFromStorage = JSON.parse(localStorage.getItem("header-urlList"));
+  const skillFromStorage = JSON.parse(localStorage.getItem("header-skillList"));
+  useEffect(() => {
+    urlFromStorage && setUrlList(urlFromStorage);
+    skillFromStorage && setSkill(skillFromStorage)
+    return;
+  }, []);
+  // add skill
+  const [skillList, setSkill] = useState([]);
+  const handleChangeSkill = (e, index) => {
+    e.persist();
+    const { name, value } = e.target;
+    const list = [...skillList];
+    list[index][name] = value;
+    setSkill(list);
+  };
+  const handleAddSkill = (e) => {
+    e.preventDefault();
+    setSkill([
+      ...skillList,
+      {
+        skill: "",
+      },
+    ]);
+  };
+  const handleDelSkill = (index) => {
+    const list = [...skillList];
+    list.splice(index, 1);
+    setSkill(list);
+  };
   return (
     <>
       <div className="md:flex md:columns-2  xl:w-full ">
@@ -72,13 +128,13 @@ function Home({ setHeaderDone }) {
             <div className="flex justify-center mb-4">
               <ul className="steps">
                 <li data-content="!" className="px-2 step step-secondary">
-                  Header
+                  <Link to="/">Header</Link>
                 </li>
                 <li data-content="?" className="px-2 step step-neutral">
-                  Experience
+                  <Link to="/experience">Experience</Link>
                 </li>
                 <li data-content="?" className="px-2 step step-neutral">
-                  Education
+                  <Link to="/education">Education</Link>
                 </li>
               </ul>
             </div>
@@ -89,8 +145,6 @@ function Home({ setHeaderDone }) {
 
               <ReactToPrint
                 trigger={() => {
-                  // NOTE: could just as easily return <SomeComponent />. Do NOT pass an `onClick` prop
-                  // to the root node of the returned component as it will be overwritten.
                   return (
                     <a href="#" className="float-right">
                       {" "}
@@ -320,6 +374,71 @@ function Home({ setHeaderDone }) {
                   {" "}
                 </textarea>
               </div>
+              <div className="my-2">
+                <button onClick={handleAddUrl} className="text-sm">
+                  <i className="fa fa-plus"></i> Add Url
+                </button>
+                {urlList.slice(0, urlList.length).map((x, i) => (
+                  <div key={i} className="mt-1 relative rounded-md shadow-sm">
+                    <input
+                      type="text"
+                      name="url"
+                      id="url"
+                      onChange={(e) => handleChangeUrl(e, i)}
+                      value={x.url}
+                      className=" appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline pl-28"
+                      placeholder="https://instagram.com/username"
+                    />
+                    <div className="absolute inset-y-0 left-0 flex items-center">
+                      <span
+                        id={`del${i}`}
+                        onClick={() => handleDelUrl(i)}
+                        className="focus:ring-indigo-500 flex place-items-center focus:border-indigo-500 h-full py-0 pl-2 border-transparent bg-transparent text-gray-500 sm:text-sm rounded-md focus:outline-none focus:shadow-outline cursor-pointer"
+                      >
+                        <i className="fa fa-minus text-red-700"></i>
+                      </span>
+                      <select
+                        id="label"
+                        name="label"
+                        onChange={(e) => handleChangeUrl(e, i)}
+                        value={x.label}
+                        className="focus:ring-indigo-500 focus:border-indigo-500 h-full py-0 pl-2 border-transparent bg-transparent text-gray-500 sm:text-sm rounded-md focus:outline-none focus:shadow-outline "
+                      >
+                        <option value="Instagram">Instagram</option>
+                        <option value="LinkedIn">LinkedIn</option>
+                        <option value="Website">Website</option>
+                      </select>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <div className="my-2 mt-4">
+                <button onClick={handleAddSkill} className="text-sm">
+                  <i className="fa fa-plus"></i> Add Skill
+                </button>
+                {skillList.slice(0, skillList.length).map((x, i) => (
+                  <div key={i} className="mt-1 relative rounded-md shadow-sm">
+                    <input
+                      type="text"
+                      name="skill"
+                      id="skill"
+                      onChange={(e) => handleChangeSkill(e, i)}
+                      value={x.skill}
+                      className=" appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline pl-7"
+                      placeholder="e.g. Photoshop"
+                    />
+                    <div className="absolute inset-y-0 left-0 flex items-center">
+                      <span
+                        id={`delSkill${i}`}
+                        onClick={() => handleDelSkill(i)}
+                        className="focus:ring-indigo-500 flex place-items-center focus:border-indigo-500 h-full py-0 pl-2 border-transparent bg-transparent text-gray-500 sm:text-sm rounded-md focus:outline-none focus:shadow-outline cursor-pointer"
+                      >
+                        <i className="fa fa-minus text-red-700"></i>
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
               <div className="flex justify-end">
                 <button
                   type="submit"
@@ -340,6 +459,8 @@ function Home({ setHeaderDone }) {
             imageFormat={imageFormat}
             componentRef={componentRef}
             inputForm={inputForm}
+            urlList={urlList}
+            skillList={skillList}
           />
         </div>
       </div>

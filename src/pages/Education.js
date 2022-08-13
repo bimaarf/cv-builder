@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import ReactToPrint from "react-to-print";
 import { toast } from "react-toastify";
 import { OutputCV } from "./Components/OutputCV";
@@ -57,11 +57,17 @@ export const Education = () => {
     years.push(i);
   }
   useEffect(() => {
+    !localStorage.getItem("experiences") && navRedirect("/experience");
+
     localStorage.getItem("education-list") &&
       setEducationList(JSON.parse(localStorage.getItem("education-list")));
-    !localStorage.getItem("experiences") && navRedirect("/experience");
   }, []);
-
+  const clearChace = (e) => {
+    e.preventDefault();
+    localStorage.clear();
+    toast.success("cache clear");
+    navRedirect("/");
+  };
   return (
     <>
       <div className="md:flex md:columns-2 xl:w-full">
@@ -70,10 +76,10 @@ export const Education = () => {
             <div className="flex justify-center mb-4">
               <ul className="steps">
                 <li data-content="✔️" className="px-2 step step-neutral">
-                  Header
+                  <Link to="/">Header</Link>
                 </li>
                 <li data-content="✔️" className="px-2 step step-neutral">
-                  Experience
+                  <Link to="/experience">Experience</Link>
                 </li>
                 <li
                   data-content={stepDone}
@@ -81,7 +87,7 @@ export const Education = () => {
                     stepDone === "!" ? "step-secondary" : "step-neutral"
                   }`}
                 >
-                  Education
+                  <Link to="/education">Education</Link>
                 </li>
               </ul>
             </div>
@@ -231,7 +237,7 @@ export const Education = () => {
               Save
             </button>
           </div>
-          <div className="flex justify-center mt-4 pb-10">
+          <div className="flex justify-center mt-4 ">
             <ReactToPrint
               trigger={() => {
                 return (
@@ -243,12 +249,25 @@ export const Education = () => {
                   </button>
                 );
               }}
+              documentTitle={`CV-${localStorage.getItem(
+                "header-firstName"
+              )} ${localStorage.getItem("header-lastName")}`}
               content={() => componentRef.current}
             />
           </div>
+          <div className="flex flex-center pb-10">
+            <span
+              onClick={clearChace}
+              className=" hover:text-red-400 px-8 py-1 text-xs rounded-sm md:text-md text-red-600 cursor-pointer"
+            >
+              Clear Cache
+            </span>
+          </div>
         </div>
         <div className="md:w-2/4 grid text-2xs">
-          <h1 className="text-center text-sky-900 font-bold text-lg mt-4 -mb-4">Preview</h1>
+          <h1 className="text-center text-sky-900 font-bold text-lg mt-4 -mb-4">
+            Preview
+          </h1>
           <OutputCV componentRef={componentRef} educationList={educationList} />
         </div>
       </div>

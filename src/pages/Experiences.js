@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import ReactToPrint from "react-to-print";
 import { OutputCV } from "./Components/OutputCV";
 export const Experiences = ({ setExperienceDone }) => {
@@ -76,7 +76,7 @@ export const Experiences = ({ setExperienceDone }) => {
   const workList = JSON.parse(localStorage.getItem("experiences-workList"));
   useEffect(() => {
     workList && setExperiencesList(workList);
-    localStorage.getItem("header") !== "done" && navRedirect("/");
+    !localStorage.getItem("header") && navRedirect("/");
   }, []);
   return (
     <>
@@ -86,13 +86,13 @@ export const Experiences = ({ setExperienceDone }) => {
             <div className="flex justify-center mb-4">
               <ul className="steps">
                 <li data-content="✔️" className="px-2 step step-neutral">
-                  Header
+                  <Link to="/">Header</Link>
                 </li>
                 <li data-content="!" className="px-2 step step-secondary">
-                  Experience
+                  <Link to="/experience">Experience</Link>
                 </li>
                 <li data-content="?" className="px-2 step step-neutral">
-                  Education
+                  <Link to="/education">Education</Link>
                 </li>
               </ul>
             </div>
@@ -245,10 +245,10 @@ export const Experiences = ({ setExperienceDone }) => {
               Next Education
             </button>
           </div>
-          <div className="flex justify-center mt-4 pb-10">
+          <div className="flex justify-start mt-4 pb-10 pl-10">
             <button
               onClick={noExperiences}
-              className="bg-sky-400 hover:bg-gray-400 px-10 py-2 rounded-sm text-white"
+              className=" hover:text-red-400 px-8 py-1 text-xs rounded-sm md:text-md text-sky-700"
             >
               I have no experience
             </button>

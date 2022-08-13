@@ -5,12 +5,16 @@ export const OutputCV = ({
   inputForm,
   experiencesList,
   educationList,
+  urlList,
+  skillList,
 }) => {
   const location = useLocation();
   const workListLocal = JSON.parse(
     localStorage.getItem("experiences-workList")
   );
   const eduListLocal = JSON.parse(localStorage.getItem("education-list"));
+  const urlListLocal = JSON.parse(localStorage.getItem("header-urlList"));
+  const skillListLocal = JSON.parse(localStorage.getItem("header-skillList"));
   return (
     <div className="border scale-95 border-gray-200" style={{ height: 1200 }}>
       <div ref={componentRef}>
@@ -31,12 +35,11 @@ export const OutputCV = ({
                   {localStorage.getItem("header-lastName")}
                 </h1>
               )}
+
               <p style={{ fontSize: 8 }}>
-                {location.pathname !== "/"
-                  ? localStorage.getItem("header-firstName")
-                    ? localStorage.getItem("header-profession")
-                    : inputForm.profession
-                  : inputForm.profession}
+                {location.pathname === "/"
+                  ? inputForm.profession
+                  : localStorage.getItem("header-profession")}
               </p>
             </div>
             {/* Summary */}
@@ -62,9 +65,7 @@ export const OutputCV = ({
                   {experiencesList.map((items, index) => (
                     <div
                       key={index}
-                      className={`${
-                        experiencesList.length > 4 && "scale-75 -ml-10"
-                      } mt-2 border border-gray-200 p-3`}
+                      className=" mt-2 border border-gray-200 p-3"
                     >
                       <h1 className="font-bold">
                         {items.jobTitle}
@@ -102,9 +103,7 @@ export const OutputCV = ({
                       {workListLocal.map((items, index) => (
                         <div
                           key={index}
-                          className={`${
-                            workListLocal.length > 4 && "scale-75 -ml-10"
-                          } mt-2 border border-gray-200 p-3`}
+                          className="mt-2 border border-gray-200 p-3"
                         >
                           <h1 className="font-bold">
                             {items.jobTitle}
@@ -142,9 +141,7 @@ export const OutputCV = ({
                   {educationList.map((items, index) => (
                     <div
                       key={index}
-                      className={`${
-                        educationList.length > 4 && "scale-75 -ml-10"
-                      } mt-2 border border-gray-200 p-3`}
+                      className="mt-2 border border-gray-200 p-3"
                     >
                       <h1 className="font-bold">
                         {items.schoolName}
@@ -179,9 +176,7 @@ export const OutputCV = ({
                       {eduListLocal.map((items, index) => (
                         <div
                           key={index}
-                          className={`${
-                            eduListLocal.length > 4 && "scale-75 -ml-10"
-                          } mt-2 border border-gray-200 p-3`}
+                          className="mt-2 border border-gray-200 p-3"
                         >
                           <h1 className="font-bold">
                             {items.schoolName}
@@ -237,7 +232,13 @@ export const OutputCV = ({
                   {inputForm.postalCode}
                 </p>
               ) : (
-                <>asd</>
+                <p className="text-gray-500">
+                  {localStorage.getItem("header-city")}
+                  {", "}
+                  {localStorage.getItem("header-country")}
+                  {", "}
+                  {localStorage.getItem("header-postalCode")}
+                </p>
               )}
             </div>
             <div className="mt-1" style={{ fontSize: 12 }}>
@@ -259,6 +260,53 @@ export const OutputCV = ({
                     : inputForm.email
                   : localStorage.getItem("header-email")}
               </p>
+            </div>
+            {urlList && location.pathname === "/" ? (
+              <div className="mt-1" style={{ fontSize: 12 }}>
+                {urlList.map((items, index) => (
+                  <div key={index}>
+                    <p className="text-gray-700 font-semibold">{items.label}</p>
+                    <p className="text-gray-500">{items.url}</p>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <>
+                {urlListLocal && (
+                  <>
+                    <div className="mt-1" style={{ fontSize: 12 }}>
+                      {urlListLocal.map((items, index) => (
+                        <div key={index}>
+                          <p className="text-gray-700 font-semibold">
+                            {items.label}
+                          </p>
+                          <p className="text-gray-500">{items.url}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </>
+                )}
+              </>
+            )}
+            <h1 className="border-b-2 border-sky-300 font-bold mt-3">Skills</h1>
+            <div style={{ fontSize: 12 }}>
+              {skillList && location.pathname === "/" ? (
+                <div className="mt-1 ml-4">
+                  <ul className="list-disc">
+                    {skillList.map((items, index) => (
+                      <li key={index}>{items.skill}</li>
+                    ))}
+                  </ul>
+                </div>
+              ) : (
+                <div className="mt-1 ml-4">
+                  <ul className="list-disc">
+                    {skillListLocal.map((items, index) => (
+                      <li key={index}>{items.skill}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
             </div>
           </div>
         </div>
