@@ -288,7 +288,13 @@ export const OutputCV = ({
                 )}
               </>
             )}
-            <h1 className="border-b-2 border-sky-300 font-bold mt-3">Skills</h1>
+            {skillList || localStorage.getItem("header-skillList") ? (
+              <h1 className="border-b-2 border-sky-300 font-bold mt-3">
+                Skills
+              </h1>
+            ) : (
+              ""
+            )}
             <div style={{ fontSize: 12 }}>
               {skillList && location.pathname === "/" ? (
                 <div className="mt-1 ml-4">

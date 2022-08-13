@@ -2,9 +2,11 @@ import React, { useEffect, useState } from "react";
 export const Modal = () => {
   const [showModal, setShowModal] = useState(false);
   useEffect(() => {
-    setTimeout(() => {
-      setShowModal(true);
-    }, 1000);
+    if (!localStorage.getItem("header")) {
+      setTimeout(() => {
+        setShowModal(true);
+      }, 1000);
+    }
   }, []);
 
   const modalController = () => {
@@ -14,7 +16,7 @@ export const Modal = () => {
   return (
     <>
       <input
-        // checked={showModal ? true : false}
+        checked={showModal ? true : false}
         type="checkbox"
         id="my-modal"
         className="modal-toggle"
